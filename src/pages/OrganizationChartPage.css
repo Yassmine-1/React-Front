@@ -1,0 +1,293 @@
+/* Organization Chart Page Styles */
+.organization-chart-page {
+  padding: 24px;
+  min-height: 100%;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+}
+
+.page-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Talent Grid Container */
+.talent-grid-container {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.talent-grid {
+  padding: 24px;
+}
+
+/* Individual Talent Boxes */
+.talent-box {
+  border: 3px solid;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+  min-height: 300px;
+}
+
+.talent-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.box-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  font-weight: 600;
+}
+
+.box-header .MuiSvgIcon-root {
+  font-size: 24px;
+}
+
+.box-header .MuiTypography-h6 {
+  color: white;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.box-content {
+  padding: 16px;
+  min-height: 200px;
+}
+
+/* Employee Cards */
+.employee-card {
+  margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.employee-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.employee-card-content {
+  padding: 12px !important;
+}
+
+.employee-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.employee-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.employee-info {
+  flex: 1;
+}
+
+.employee-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 2px;
+}
+
+.employee-role {
+  color: #7f8c8d;
+  font-size: 11px;
+}
+
+.employee-metrics {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.performance-chip {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  font-weight: 500;
+  font-size: 10px;
+}
+
+.potential-chip {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  font-weight: 500;
+  font-size: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .talent-grid {
+    padding: 16px;
+  }
+  
+  .talent-box {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .organization-chart-page {
+    padding: 16px;
+  }
+  
+  .page-header {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
+  }
+  
+  .talent-grid {
+    padding: 12px;
+  }
+  
+  .talent-box {
+    min-height: 250px;
+    margin-bottom: 16px;
+  }
+  
+  .box-header {
+    padding: 12px;
+  }
+  
+  .box-content {
+    padding: 12px;
+  }
+  
+  .employee-card-content {
+    padding: 8px !important;
+  }
+  
+  .employee-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .organization-chart-page {
+    padding: 12px;
+  }
+  
+  .page-header {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .talent-grid {
+    padding: 8px;
+  }
+  
+  .talent-box {
+    min-height: 220px;
+  }
+  
+  .box-header {
+    padding: 10px;
+  }
+  
+  .box-header .MuiTypography-h6 {
+    font-size: 1rem;
+  }
+  
+  .box-content {
+    padding: 10px;
+  }
+  
+  .employee-metrics {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .performance-chip,
+  .potential-chip {
+    font-size: 9px;
+  }
+}
+
+/* Animation for page load */
+.organization-chart-page {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effects for talent boxes */
+.talent-box:hover .box-header {
+  filter: brightness(1.1);
+}
+
+.talent-box:hover .employee-card {
+  border-left: 3px solid;
+  border-left-color: inherit;
+}
+
+/* Custom scrollbar for box content */
+.box-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.box-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.box-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.box-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
