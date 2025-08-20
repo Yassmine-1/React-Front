@@ -93,7 +93,7 @@ const Sidebar = () => {
         <Collapse in={openSections.personalInfo} timeout="auto" unmountOnExit className="sidebar-collapse">
           <List component="div" disablePadding className="sidebar-subsection">
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/personal/hr">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Work />
                 </ListItemIcon>
@@ -101,7 +101,7 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/personal/pro">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <BusinessCenter />
                 </ListItemIcon>
@@ -130,7 +130,7 @@ const Sidebar = () => {
         <Collapse in={openSections.coworkersInfo} timeout="auto" unmountOnExit className="sidebar-collapse">
           <List component="div" disablePadding className="sidebar-subsection">
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/coworkers/hr">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Work />
                 </ListItemIcon>
@@ -138,7 +138,7 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/coworkers/pro">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <BusinessCenter />
                 </ListItemIcon>
@@ -167,7 +167,7 @@ const Sidebar = () => {
         <Collapse in={openSections.skills} timeout="auto" unmountOnExit className="sidebar-collapse">
           <List component="div" disablePadding className="sidebar-subsection">
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/skills/personal">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Psychology />
                 </ListItemIcon>
@@ -175,7 +175,7 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/skills/coworkers">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Group />
                 </ListItemIcon>
@@ -204,7 +204,7 @@ const Sidebar = () => {
         <Collapse in={openSections.goals} timeout="auto" unmountOnExit className="sidebar-collapse">
           <List component="div" disablePadding className="sidebar-subsection">
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/goals/personal">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <TrendingUp />
                 </ListItemIcon>
@@ -212,7 +212,7 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/goals/coworkers">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Group />
                 </ListItemIcon>
@@ -241,7 +241,7 @@ const Sidebar = () => {
         <Collapse in={openSections.reviews} timeout="auto" unmountOnExit className="sidebar-collapse">
           <List component="div" disablePadding className="sidebar-subsection">
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/reviews/personal">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Person />
                 </ListItemIcon>
@@ -249,7 +249,7 @@ const Sidebar = () => {
               </ListItemButton>
             </ListItem>
             <ListItem className="sidebar-subsection-item">
-              <ListItemButton className="sidebar-subsection-button">
+              <ListItemButton className="sidebar-subsection-button" component={Link} to="/reviews/coworkers">
                 <ListItemIcon className="sidebar-subsection-icon">
                   <Group />
                 </ListItemIcon>

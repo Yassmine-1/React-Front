@@ -18,6 +18,16 @@ import HelpIcon from '@mui/icons-material/Help';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Sidebar from './components/Sidebar';
 import OrganizationChartPage from './pages/OrganizationChartPage';
+import PersonalHRInfoPage from './pages/PersonalHRInfoPage';
+import PersonalProInfoPage from './pages/PersonalProInfoPage';
+import CoworkersHRInfoPage from './pages/CoworkersHRInfoPage';
+import CoworkersProInfoPage from './pages/CoworkersProInfoPage';
+import PersonalSkillsPage from './pages/PersonalSkillsPage';
+import CoworkersSkillsPage from './pages/CoworkersSkillsPage';
+import PersonalGoalsPage from './pages/PersonalGoalsPage';
+import CoworkersGoalsPage from './pages/CoworkersGoalsPage';
+import PersonalReviewsPage from './pages/PersonalReviewsPage';
+import CoworkersReviewsPage from './pages/CoworkersReviewsPage';
 import './App.css';
 
 // Login Component
@@ -232,6 +242,16 @@ function Dashboard({ userEmail, onLogout }) {
         <Box className="content-area" component="main">
           <Routes>
             <Route path="/" element={<OrganizationChartPage />} />
+            <Route path="/personal/hr" element={<PersonalHRInfoPage />} />
+            <Route path="/personal/pro" element={<PersonalProInfoPage />} />
+            <Route path="/coworkers/hr" element={<CoworkersHRInfoPage />} />
+            <Route path="/coworkers/pro" element={<CoworkersProInfoPage />} />
+            <Route path="/skills/personal" element={<PersonalSkillsPage />} />
+            <Route path="/skills/coworkers" element={<CoworkersSkillsPage />} />
+            <Route path="/goals/personal" element={<PersonalGoalsPage />} />
+            <Route path="/goals/coworkers" element={<CoworkersGoalsPage />} />
+            <Route path="/reviews/personal" element={<PersonalReviewsPage />} />
+            <Route path="/reviews/coworkers" element={<CoworkersReviewsPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Box>
