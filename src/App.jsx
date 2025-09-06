@@ -1,22 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { 
-  Box, 
-  AppBar, 
-  Toolbar, 
-  Typography, 
-  IconButton, 
-  Menu, 
-  MenuItem,
-  TextField,
-  Button,
-  Paper,
-  Container,
-  Alert
-} from '@mui/material';
-import HelpIcon from '@mui/icons-material/Help';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Sidebar from './components/Sidebar';
+import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import OrganizationChartPage from './pages/OrganizationChartPage';
 import PersonalHRInfoPage from './pages/PersonalHRInfoPage';
 import PersonalProInfoPage from './pages/PersonalProInfoPage';
@@ -30,219 +13,262 @@ import PersonalReviewsPage from './pages/PersonalReviewsPage';
 import CoworkersReviewsPage from './pages/CoworkersReviewsPage';
 import './App.css';
 
-// Login Component
-function LoginPage({ onLogin }) {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [error, setError] = useState('');
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+// Sidebar Component
+function Sidebar() {
+  const location = useLocation();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Basic validation
-    if (!formData.email || !formData.password) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    // Simple email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-
-    // For demo purposes, accept any credentials
-    // In a real app, you would validate against your backend
-    if (formData.password.length >= 6) {
-      setError('');
-      onLogin(formData.email);
-    } else {
-      setError('Password must be at least 6 characters');
-    }
+  const isActive = (path) => {
+    return location.pathname === path;
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Paper
-          elevation={3}
-          sx={{
-            padding: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-            maxWidth: 400,
-          }}
-        >
-          {/* App Logo */}
-          <Box
-            component="img"
-            src="/vite.svg"
-            alt="App Logo"
-            sx={{
-              width: 64,
-              height: 64,
-              marginBottom: 2,
-            }}
-          />
-          
-          <Typography component="h1" variant="h4" sx={{ marginBottom: 1 }}>
-            HR Dashboard
-          </Typography>
-          
-          <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
-            Sign in to access your dashboard
-          </Typography>
-
-          {error && (
-            <Alert severity="error" sx={{ width: '100%', marginBottom: 2 }}>
-              {error}
-            </Alert>
-          )}
-
-          <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={formData.email}
-              onChange={handleInputChange}
-              sx={{ marginBottom: 2 }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={formData.password}
-              onChange={handleInputChange}
-              sx={{ marginBottom: 3 }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ 
-                mt: 1, 
-                mb: 2,
-                py: 1.5,
-                fontSize: '1.1rem',
-                backgroundColor: '#1976d2',
-                '&:hover': {
-                  backgroundColor: '#1565c0',
-                }
-              }}
-            >
-              Sign In
-            </Button>
-          </Box>
-
-          <Box sx={{ textAlign: 'center', width: '100%' }}>
-            <Typography variant="body2" color="text.secondary">
-              Demo Credentials: Use any email and password (min 6 characters)
-            </Typography>
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
+    <div className="left-sidebar">
+      <div className="menu-section">
+        <div className="menu-header">Personal info</div>
+        <Link to="/personal/hr" className={`menu-item ${isActive('/personal/hr') ? 'active' : ''}`}>
+          &gt; HR Info
+        </Link>
+        <Link to="/personal/pro" className={`menu-item ${isActive('/personal/pro') ? 'active' : ''}`}>
+          &gt; Pro Info
+        </Link>
+      </div>
+      
+      <div className="menu-section">
+        <div className="menu-header">Coworkers info</div>
+        <Link to="/coworkers/hr" className={`menu-item ${isActive('/coworkers/hr') ? 'active' : ''}`}>
+          &gt; HR Info
+        </Link>
+        <Link to="/coworkers/pro" className={`menu-item ${isActive('/coworkers/pro') ? 'active' : ''}`}>
+          &gt; Pro Info
+        </Link>
+      </div>
+      
+      <div className="menu-section">
+        <div className="menu-header">Skills</div>
+        <Link to="/skills/personal" className={`menu-item ${isActive('/skills/personal') ? 'active' : ''}`}>
+          &gt; My Skills
+        </Link>
+        <Link to="/skills/coworkers" className={`menu-item ${isActive('/skills/coworkers') ? 'active' : ''}`}>
+          &gt; Coworkers Skills
+        </Link>
+      </div>
+      
+      <div className="menu-section">
+        <div className="menu-header">Goals</div>
+        <Link to="/goals/personal" className={`menu-item ${isActive('/goals/personal') ? 'active' : ''}`}>
+          &gt; Personal Goals
+        </Link>
+        <Link to="/goals/coworkers" className={`menu-item ${isActive('/goals/coworkers') ? 'active' : ''}`}>
+          &gt; Coworkers Goals
+        </Link>
+      </div>
+      
+      <div className="menu-section">
+        <div className="menu-header">Reviews</div>
+        <Link to="/reviews/personal" className={`menu-item ${isActive('/reviews/personal') ? 'active' : ''}`}>
+          &gt; Personal Reviews
+        </Link>
+        <Link to="/reviews/coworkers" className={`menu-item ${isActive('/reviews/coworkers') ? 'active' : ''}`}>
+          &gt; Coworkers Reviews
+        </Link>
+      </div>
+      
+      {/* <div className="menu-section special">
+        <div className="menu-header">9 BOX GRID TALENT MANAGEMENT</div>
+        <div className="menu-item red">&gt; To be defined</div>
+      </div> */}
+    </div>
   );
 }
 
-// Dashboard Component (existing dashboard content)
-function Dashboard({ userEmail, onLogout }) {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+// Dashboard Component (new design)
+function Dashboard() {
+  const userName = "Aymen";
+  
+  // Get current date dynamically
+  const getCurrentDate = () => {
+    const now = new Date();
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return now.toLocaleDateString('en-US', options);
   };
+  
+  const currentDate = getCurrentDate();
+  const appName = "HR Dashboard";
+  
+  // Sample news data
+  const [newsItems] = useState([
+    {
+      id: 1,
+      title: "Company Annual Meeting Scheduled",
+      date: "July 30, 2025",
+      type: "announcement",
+      description: "The annual company meeting will be held on August 15th at the main conference hall."
+    },
+    {
+      id: 2,
+      title: "New HR Policies Released",
+      date: "July 28, 2025",
+      type: "policy",
+      description: "Updated employee handbook and new remote work guidelines are now available."
+    },
+    {
+      id: 3,
+      title: "Team Building Event",
+      date: "July 25, 2025",
+      type: "event",
+      description: "Join us for the quarterly team building event this Friday at 2 PM."
+    }
+  ]);
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  // Sample colleagues data
+  const [colleagues] = useState({
+    recent: [
+      { id: 1, name: "Sarah Johnson", position: "Marketing Manager", avatar: "SJ", joinDate: "July 29, 2025" },
+      { id: 2, name: "Mike Chen", position: "Software Developer", avatar: "MC", joinDate: "July 26, 2025" },
+      { id: 3, name: "Emily Davis", position: "UX Designer", avatar: "ED", joinDate: "July 24, 2025" }
+    ],
+    comingSoon: [
+      { id: 4, name: "Alex Rodriguez", position: "Data Analyst", avatar: "AR", startDate: "August 5, 2025" },
+      { id: 5, name: "Lisa Wang", position: "Product Manager", avatar: "LW", startDate: "August 12, 2025" },
+      { id: 6, name: "David Brown", position: "DevOps Engineer", avatar: "DB", startDate: "August 18, 2025" }
+    ]
+  });
 
-  const handleLogout = () => {
-    handleMenuClose();
-    onLogout();
-  };
+  const [activeTab, setActiveTab] = useState('recent');
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <Box className="dashboard-container">
+    <div className="dashboard-container">
       {/* Header */}
-      <AppBar className="dashboard-header" position="static">
-        <Toolbar className="header-toolbar">
-          {/* Left side - App Logo and Name */}
-          <Box className="app-logo-section">
-            <Box
-              component="img"
-              src="/vite.svg"
-              alt="App Logo"
-              className="app-logo"
-            />
-            <Typography className="app-title" variant="h6" component="div">
-              HR Dashboard
-            </Typography>
-          </Box>
-
-          {/* Right side - Help and User Profile */}
-          <Box className="header-actions">
-            <IconButton className="header-button" color="inherit">
-              <HelpIcon />
-            </IconButton>
-            <IconButton
-              className="header-button"
-              color="inherit"
-              onClick={handleProfileMenuOpen}
+      <div className="header">
+        <div className="header-left">
+          <img src="/logos/logo-app.png" alt="App Logo" className="app-logo" />
+          <span className="app-name">{appName}</span>
+        </div>
+        <div className="header-center">
+          <img src="/logos/logo-telnet.jpg" alt="LOGO TELNET" className="telnet-logo" />
+        </div>
+        <div className="header-right">
+          <span className="help-link">? (help)</span>
+          <div className="user-profile-container" ref={userMenuRef}>
+            <span 
+              className="user-profile" 
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              style={{ cursor: 'pointer' }}
             >
-              <AccountCircleIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
+              User profile
+            </span>
+            {showUserMenu && (
+              <div className="user-menu-dropdown">
+                <div className="user-menu-header">
+                  <div className="user-avatar">A</div>
+                  <div className="user-info">
+                    <div className="user-name">Aymen</div>
+                    <div className="user-email">aymen@company.com</div>
+                  </div>
+                </div>
+                <div className="user-menu-divider"></div>
+                <div className="user-menu-items">
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">👤</span>
+                    <span>My Profile</span>
+                  </div>
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">⚙️</span>
+                    <span>Settings</span>
+                  </div>
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">🔔</span>
+                    <span>Notifications</span>
+                  </div>
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                  </div>
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">📋</span>
+                    <span>My Tasks</span>
+                  </div>
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">📈</span>
+                    <span>Reports</span>
+                  </div>
+                  <div className="menu-item" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">❓</span>
+                    <span>Help & Support</span>
+                  </div>
+                  <div className="menu-divider"></div>
+                  <div className="menu-item logout" onClick={() => setShowUserMenu(false)}>
+                    <span className="menu-icon">🚪</span>
+                    <span>Disconnect</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
-      {/* Startup Logo Section */}
-      <Box className="startup-logo-section">
-        <Box
-          component="img"
-          src="/vite.svg"
-          alt="Startup Logo"
-          className="startup-logo"
-        />
-      </Box>
-
-      {/* Main Content with Sidebar */}
-      <Box className="main-content">
+      {/* Main Content */}
+      <div className="main-content">
+        {/* Left Sidebar */}
         <Sidebar />
-        <Box className="content-area" component="main">
+
+        {/* Center Content */}
+        <div className="center-content">
           <Routes>
-            <Route path="/" element={<OrganizationChartPage />} />
-            <Route path="/personal/hr" element={<PersonalHRInfoPage />} />
+            <Route path="/" element={<Navigate to="/personal/hr" replace />} />
+            <Route path="/personal/hr" element={
+              <div>
+                <div className="welcome-section">
+                  <div className="image-placeholder">
+                    <img src="/logos/logo-app.png" alt="User Avatar" className="user-avatar-img" />
+                  </div>
+                  <div className="welcome-text">
+                    <h2>Hello Aymen</h2>
+                    <p>The date is {currentDate}</p>
+                  </div>
+                </div>
+                
+                <div className="news-section">
+                  <h3>Your latest news</h3>
+                  <div className="news-content">
+                    {newsItems.map(item => (
+                      <div key={item.id} className="news-item">
+                        <div className="news-item-header">
+                          <span className={`news-type ${item.type}`}>{item.type}</span>
+                          <span className="news-date">{item.date}</span>
+                        </div>
+                        <h4 className="news-title">{item.title}</h4>
+                        <p className="news-description">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+              </div>
+            } />
             <Route path="/personal/pro" element={<PersonalProInfoPage />} />
             <Route path="/coworkers/hr" element={<CoworkersHRInfoPage />} />
             <Route path="/coworkers/pro" element={<CoworkersProInfoPage />} />
@@ -252,51 +278,88 @@ function Dashboard({ userEmail, onLogout }) {
             <Route path="/goals/coworkers" element={<CoworkersGoalsPage />} />
             <Route path="/reviews/personal" element={<PersonalReviewsPage />} />
             <Route path="/reviews/coworkers" element={<CoworkersReviewsPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/organization-chart" element={<OrganizationChartPage />} />
+            <Route path="*" element={<Navigate to="/personal/hr" replace />} />
           </Routes>
-        </Box>
-      </Box>
+        </div>
 
-      {/* Profile Menu */}
-      <Menu
-        className="profile-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem className="profile-menu-item" onClick={handleMenuClose}>
-          Profile ({userEmail})
-        </MenuItem>
-        <MenuItem className="profile-menu-item" onClick={handleMenuClose}>Settings</MenuItem>
-        <MenuItem className="profile-menu-item" onClick={handleLogout}>Logout</MenuItem>
-      </Menu>
-    </Box>
+        {/* Right Sidebar */}
+        <div className="right-sidebar">
+          <div className="colleagues-header">
+            <span>Colleagues</span>
+            <Link to="/organization-chart" className="org-chart">View the organization chart</Link>
+          </div>
+          
+          <div className="search-section">
+            <input 
+              type="text" 
+              placeholder="(search for a colleague)"
+              className="search-input"
+            />
+          </div>
+          
+          <div className="new-colleagues">
+            <div className="section-title">New colleagues</div>
+            <div className="tabs">
+              <button 
+                className={`tab ${activeTab === 'recent' ? 'active' : ''}`}
+                onClick={() => setActiveTab('recent')}
+              >
+                Recent ({colleagues.recent.length})
+              </button>
+              <button 
+                className={`tab ${activeTab === 'comingSoon' ? 'active' : ''}`}
+                onClick={() => setActiveTab('comingSoon')}
+              >
+                Coming Soon ({colleagues.comingSoon.length})
+              </button>
+            </div>
+            <div className="colleagues-grid">
+              {activeTab === 'recent' ? (
+                colleagues.recent.map(colleague => (
+                  <div key={colleague.id} className="colleague-card">
+                    <div className="colleague-avatar">{colleague.avatar}</div>
+                    <div className="colleague-info">
+                      <h4 className="colleague-name">{colleague.name}</h4>
+                      <p className="colleague-position">{colleague.position}</p>
+                      <p className="colleague-date">Joined: {colleague.joinDate}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                colleagues.comingSoon.map(colleague => (
+                  <div key={colleague.id} className="colleague-card">
+                    <div className="colleague-avatar">{colleague.avatar}</div>
+                    <div className="colleague-info">
+                      <h4 className="colleague-name">{colleague.name}</h4>
+                      <p className="colleague-position">{colleague.position}</p>
+                      <p className="colleague-date">Starts: {colleague.startDate}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* Footer */}
+      <div className="footer">
+        l'affichage biensur dépend du profile qui a fait le Login (il y aurait donc des restrictions selon le cas)
+      </div>
+    </div>
   );
 }
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
-
-  const handleLogin = (email) => {
-    setUserEmail(email);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserEmail('');
-  };
-
   return (
     <Router>
-      {isLoggedIn ? (
-        <Dashboard userEmail={userEmail} onLogout={handleLogout} />
-      ) : (
-        <LoginPage onLogin={handleLogin} />
-      )}
+      <Dashboard />
     </Router>
   );
 }
 
 export default App;
+
+
