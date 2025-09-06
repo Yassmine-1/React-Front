@@ -11,6 +11,7 @@ import PersonalGoalsPage from './pages/PersonalGoalsPage';
 import CoworkersGoalsPage from './pages/CoworkersGoalsPage';
 import PersonalReviewsPage from './pages/PersonalReviewsPage';
 import CoworkersReviewsPage from './pages/CoworkersReviewsPage';
+import LoginPage from './pages/LoginPage';
 import './App.css';
 
 
@@ -353,9 +354,31 @@ function Dashboard() {
 }
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Handler to be passed to LoginPage
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
   return (
     <Router>
-      <Dashboard />
+      <Routes>
+        {/* Login route */}
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+
+        {/* Protected dashboard routes */}
+        <Route
+          path="/*"
+          element={
+            isAuthenticated ? (
+              <Dashboard />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+      </Routes>
     </Router>
   );
 }
