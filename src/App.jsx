@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import OrganizationChartPage from './pages/OrganizationChartPage';
+import LandingPage from './pages/LandingPage';
 import PersonalHRInfoPage from './pages/PersonalHRInfoPage';
 import PersonalProInfoPage from './pages/PersonalProInfoPage';
 import CoworkersHRInfoPage from './pages/CoworkersHRInfoPage';
@@ -26,8 +27,14 @@ function Sidebar() {
   return (
     <div className="left-sidebar">
       <div className="menu-section">
+        <Link to="/dashboard" className={`menu-item ${isActive('/dashboard') ? 'active' : ''}`}>
+          🏠 Dashboard
+        </Link>
+      </div>
+      
+      <div className="menu-section">
         <div className="menu-header">Personal info</div>
-        <Link to="/personal/hr" className={`menu-item ${isActive('/personal/hr') ? 'active' : ''}`}>
+        <Link to="/personal/hr-info" className={`menu-item ${isActive('/personal/hr-info') ? 'active' : ''}`}>
           &gt; HR Info
         </Link>
         <Link to="/personal/pro" className={`menu-item ${isActive('/personal/pro') ? 'active' : ''}`}>
@@ -85,48 +92,8 @@ function Sidebar() {
 
 // Dashboard Component (new design)
 function Dashboard() {
-  const userName = "Aymen";
-  
-  // Get current date dynamically
-  const getCurrentDate = () => {
-    const now = new Date();
-    const options = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    return now.toLocaleDateString('en-US', options);
-  };
-  
-  const currentDate = getCurrentDate();
   const appName = "HR Dashboard";
   
-  // Sample news data
-  const [newsItems] = useState([
-    {
-      id: 1,
-      title: "Company Annual Meeting Scheduled",
-      date: "July 30, 2025",
-      type: "announcement",
-      description: "The annual company meeting will be held on August 15th at the main conference hall."
-    },
-    {
-      id: 2,
-      title: "New HR Policies Released",
-      date: "July 28, 2025",
-      type: "policy",
-      description: "Updated employee handbook and new remote work guidelines are now available."
-    },
-    {
-      id: 3,
-      title: "Team Building Event",
-      date: "July 25, 2025",
-      type: "event",
-      description: "Join us for the quarterly team building event this Friday at 2 PM."
-    }
-  ]);
-
   // Sample colleagues data
   const [colleagues] = useState({
     recent: [
@@ -239,37 +206,9 @@ function Dashboard() {
         {/* Center Content */}
         <div className="center-content">
           <Routes>
-            <Route path="/" element={<Navigate to="/personal/hr" replace />} />
-            <Route path="/personal/hr" element={
-              <div>
-                <div className="welcome-section">
-                  <div className="image-placeholder">
-                    <img src="/logos/logo-app.png" alt="User Avatar" className="user-avatar-img" />
-                  </div>
-                  <div className="welcome-text">
-                    <h2>Hello Aymen</h2>
-                    <p>The date is {currentDate}</p>
-                  </div>
-                </div>
-                
-                <div className="news-section">
-                  <h3>Your latest news</h3>
-                  <div className="news-content">
-                    {newsItems.map(item => (
-                      <div key={item.id} className="news-item">
-                        <div className="news-item-header">
-                          <span className={`news-type ${item.type}`}>{item.type}</span>
-                          <span className="news-date">{item.date}</span>
-                        </div>
-                        <h4 className="news-title">{item.title}</h4>
-                        <p className="news-description">{item.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-              </div>
-            } />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<LandingPage />} />
+            <Route path="/personal/hr-info" element={<PersonalHRInfoPage />} />
             <Route path="/personal/pro" element={<PersonalProInfoPage />} />
             <Route path="/coworkers/hr" element={<CoworkersHRInfoPage />} />
             <Route path="/coworkers/pro" element={<CoworkersProInfoPage />} />
@@ -280,7 +219,7 @@ function Dashboard() {
             <Route path="/reviews/personal" element={<PersonalReviewsPage />} />
             <Route path="/reviews/coworkers" element={<CoworkersReviewsPage />} />
             <Route path="/organization-chart" element={<OrganizationChartPage />} />
-            <Route path="*" element={<Navigate to="/personal/hr" replace />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </div>
 
