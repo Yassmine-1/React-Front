@@ -1,149 +1,158 @@
 import React, { useState } from 'react';
-import { 
-  Box, Typography, Paper, Button, LinearProgress, 
-  Card, CardContent, IconButton, TextField, Divider 
-} from '@mui/material';
-import { Add, Edit, Delete, CheckCircle } from '@mui/icons-material';
-
-// Mock data
-const initialObjectives = [
-  {
-    id: 1,
-    title: "Enhance Technical Skills",
-    progress: 45,
-    keyResults: [
-      { id: 101, title: "Complete React Course", completed: true },
-      { id: 102, title: "Build 3 Projects", completed: true },
-      { id: 103, title: "Learn TypeScript", completed: false },
-    ]
-  },
-  {
-    id: 2,
-    title: "Improve Teamwork",
-    progress: 75,
-    keyResults: [
-      { id: 201, title: "Lead Meetings", completed: true },
-      { id: 202, title: "Mentor Junior", completed: true },
-      { id: 203, title: "Documentation", completed: false },
-    ]
-  }
-];
 
 const PersonalGoalsPage = () => {
-  const [objectives, setObjectives] = useState(initialObjectives);
-  const [newObjective, setNewObjective] = useState('');
+  const [selectedGoal, setSelectedGoal] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState('');
 
-  const toggleKeyResult = (objectiveId, keyResultId) => {
-    setObjectives(objectives.map(obj => {
-      if (obj.id === objectiveId) {
-        const updated = obj.keyResults.map(kr => 
-          kr.id === keyResultId ? { ...kr, completed: !kr.completed } : kr
-        );
-        const progress = Math.round((updated.filter(kr => kr.completed).length / updated.length) * 100);
-        return { ...obj, keyResults: updated, progress };
-      }
-      return obj;
-    }));
+  const goalPeriods = {
+    yearly: [
+      { id: '2025', name: '2025', goals: 0 }
+    ],
+    halfYearly: [
+      { id: 'S1-2025', name: 'S1-2025', goals: 0 },
+      { id: 'S2-2025', name: 'S2-2025', goals: 0 }
+    ],
+    quarterly: [
+      { id: 'Q1-2025', name: 'Q1-2025', goals: 0 },
+      { id: 'Q2-2025', name: 'Q2-2025', goals: 0 },
+      { id: 'Q3-2025', name: 'Q3-2025', goals: 0 },
+      { id: 'Q4-2025', name: 'Q4-2025', goals: 0 }
+    ]
   };
 
-  const addObjective = () => {
-    if (newObjective.trim()) {
-      setObjectives([...objectives, {
-        id: Date.now(),
-        title: newObjective,
-        progress: 0,
-        keyResults: []
-      }]);
-      setNewObjective('');
+  const handleGoalClick = (periodId, periodName) => {
+    setSelectedPeriod(periodName);
+    setSelectedGoal(periodId);
+  };
+
+  const getGoalDetails = () => {
+    if (!selectedGoal) return null;
+    
+    // Find the period in all categories
+    const allPeriods = [...goalPeriods.yearly, ...goalPeriods.halfYearly, ...goalPeriods.quarterly];
+    const period = allPeriods.find(p => p.id === selectedGoal);
+    
+    if (period && period.goals === 0) {
+      return "pas de goal defini pour cette periode";
     }
-  };
-
-  const deleteObjective = (id) => {
-    setObjectives(objectives.filter(obj => obj.id !== id));
+    
+    return `Détails du goal pour ${selectedPeriod}`;
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" gutterBottom>My OKRs</Typography>
-        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-          <TextField
-            size="small"
-            placeholder="New objective..."
-            value={newObjective}
-            onChange={(e) => setNewObjective(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addObjective()}
-          />
-          <Button 
-            variant="contained" 
-            onClick={addObjective}
-            disabled={!newObjective.trim()}
-          >
-            Add
-          </Button>
-        </Box>
-      </Box>
+    <div className="personal-goals-page">
+      {/* Header Section */}
+      <div className="goals-header">
+        <div className="profile-section">
+          <div className="image-placeholder">
+            <span>Image</span>
+          </div>
+          <div className="employee-name">Prenom Nom</div>
+        </div>
+        <div className="export-section">
+          <button className="export-btn">Export Goals [.xlsx]</button>
+        </div>
+      </div>
 
-      <Box sx={{ display: 'grid', gap: 3 }}>
-        {objectives.map((obj) => (
-          <Card key={obj.id}>
-            <CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="h6">{obj.title}</Typography>
-                <IconButton size="small" onClick={() => deleteObjective(obj.id)}>
-                  <Delete fontSize="small" />
-                </IconButton>
-              </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', my: 1 }}>
-                <Box sx={{ width: '100%', mr: 1 }}>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={obj.progress} 
-                    color={
-                      obj.progress < 30 ? 'error' : 
-                      obj.progress < 70 ? 'warning' : 'success'
-                    }
-                    sx={{ height: 8, borderRadius: 2 }}
-                  />
-                </Box>
-                <Typography variant="body2" color="text.secondary">
-                  {obj.progress}%
-                </Typography>
-              </Box>
+      {/* Main Content */}
+      <div className="goals-content">
+        <div className="goals-layout">
+          {/* Left Column - My Goals */}
+          <div className="my-goals-column">
+            <div className="column-header">My Goals</div>
+          </div>
 
-              <Divider sx={{ my: 2 }} />
-              
-              <Box sx={{ mt: 1 }}>
-                {obj.keyResults.map((kr) => (
-                  <Box 
-                    key={kr.id} 
-                    onClick={() => toggleKeyResult(obj.id, kr.id)}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      py: 1,
-                      cursor: 'pointer',
-                      textDecoration: kr.completed ? 'line-through' : 'none',
-                      color: kr.completed ? 'text.secondary' : 'inherit',
-                      '&:hover': { bgcolor: 'action.hover', borderRadius: 1 }
-                    }}
-                  >
-                    <CheckCircle 
-                      color={kr.completed ? 'success' : 'disabled'} 
-                      sx={{ mr: 1 }}
-                    />
-                    <Typography variant="body2">
-                      {kr.title}
-                    </Typography>
-                  </Box>
+          {/* Right Side - Goal Categories */}
+          <div className="goals-categories">
+            {/* Yearly Goals */}
+            <div className="goal-category">
+              <h3>Yearly Goals</h3>
+              <div className="goal-periods">
+                {goalPeriods.yearly.map((period) => (
+                  <div key={period.id} className="goal-period-box">
+                    <div className="period-content">
+                      <span className="period-name">{period.name}</span>
+                      <button 
+                        className="expand-btn"
+                        onClick={() => handleGoalClick(period.id, period.name)}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                    <div className="period-details">
+                      <span>-</span>
+                      <span className="goals-count">{period.goals} goals</span>
+                    </div>
+                  </div>
                 ))}
-              </Box>
-            </CardContent>
-          </Card>
-        ))}
-      </Box>
-    </Box>
+              </div>
+            </div>
+
+            {/* Half-Yearly Goals */}
+            <div className="goal-category">
+              <h3>Half-Yearly Goals</h3>
+              <div className="goal-periods">
+                {goalPeriods.halfYearly.map((period) => (
+                  <div key={period.id} className="goal-period-box">
+                    <div className="period-content">
+                      <span className="period-name">{period.name}</span>
+                      <button 
+                        className="expand-btn"
+                        onClick={() => handleGoalClick(period.id, period.name)}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                    <div className="period-details">
+                      <span>-</span>
+                      <span className="goals-count">{period.goals} goals</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quarterly Goals */}
+            <div className="goal-category">
+              <h3>Quaterly Goals</h3>
+              <div className="goal-periods">
+                {goalPeriods.quarterly.map((period) => (
+                  <div key={period.id} className="goal-period-box">
+                    <div className="period-content">
+                      <span className="period-name">{period.name}</span>
+                      <button 
+                        className="expand-btn"
+                        onClick={() => handleGoalClick(period.id, period.name)}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                    <div className="period-details">
+                      <span>-</span>
+                      <span className="goals-count">{period.goals} goals</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Goal Detail Area */}
+        <div className="goal-detail-area">
+          {selectedGoal ? (
+            <div className="goal-details">
+              <h4>Détails du Goal - {selectedPeriod}</h4>
+              <p>{getGoalDetails()}</p>
+            </div>
+          ) : (
+            <div className="no-selection">
+              <p>Sélectionnez un goal pour voir les détails</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

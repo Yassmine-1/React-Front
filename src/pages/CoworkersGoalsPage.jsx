@@ -1,90 +1,180 @@
 import React, { useState } from 'react';
-import { Box, Typography, Card, CardContent, LinearProgress, TextField } from '@mui/material';
-
-const teamGoals = [
-  {
-    id: 1,
-    title: 'Q3 Product Launch',
-    progress: 65,
-    due: 'Sep 30, 2023',
-    owner: 'Product Team'
-  },
-  {
-    id: 2,
-    title: 'Code Quality',
-    progress: 40,
-    due: 'Oct 15, 2023',
-    owner: 'Engineering'
-  },
-  {
-    id: 3,
-    title: 'Team Development',
-    progress: 75,
-    due: 'Dec 31, 2023',
-    owner: 'HR'
-  }
-];
-
-const GoalCard = ({ goal }) => (
-  <Card sx={{ mb: 2 }}>
-    <CardContent>
-      <Typography variant="h6" gutterBottom>{goal.title}</Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Box sx={{ width: '100%', mr: 1 }}>
-          <LinearProgress 
-            variant="determinate" 
-            value={goal.progress} 
-            color={goal.progress < 30 ? 'error' : goal.progress < 70 ? 'warning' : 'success'}
-            sx={{ height: 8, borderRadius: 2 }}
-          />
-        </Box>
-        <Typography variant="body2" color="text.secondary">
-          {goal.progress}%
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography variant="caption" color="text.secondary">
-          {goal.owner}
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Due: {goal.due}
-        </Typography>
-      </Box>
-    </CardContent>
-  </Card>
-);
 
 const CoworkersGoalsPage = () => {
-  const [search, setSearch] = useState('');
-  
-  const filtered = teamGoals.filter(g => 
-    g.title.toLowerCase().includes(search.toLowerCase()) ||
-    g.owner.toLowerCase().includes(search.toLowerCase())
-  );
+  const [selectedGoal, setSelectedGoal] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState('John Doe');
+
+  const employees = [
+    'John Doe',
+    'Jane Smith',
+    'Mike Johnson',
+    'Sarah Wilson',
+    'David Brown'
+  ];
+
+  const goalPeriods = {
+    yearly: [
+      { id: '2025', name: '2025', goals: 0 }
+    ],
+    halfYearly: [
+      { id: 'S1-2025', name: 'S1-2025', goals: 0 },
+      { id: 'S2-2025', name: 'S2-2025', goals: 0 }
+    ],
+    quarterly: [
+      { id: 'Q1-2025', name: 'Q1-2025', goals: 0 },
+      { id: 'Q2-2025', name: 'Q2-2025', goals: 0 },
+      { id: 'Q3-2025', name: 'Q3-2025', goals: 0 },
+      { id: 'Q4-2025', name: 'Q4-2025', goals: 0 }
+    ]
+  };
+
+  const handleGoalClick = (periodId, periodName) => {
+    setSelectedPeriod(periodName);
+    setSelectedGoal(periodId);
+  };
+
+  const getGoalDetails = () => {
+    if (!selectedGoal) return null;
+    
+    // Find the period in all categories
+    const allPeriods = [...goalPeriods.yearly, ...goalPeriods.halfYearly, ...goalPeriods.quarterly];
+    const period = allPeriods.find(p => p.id === selectedGoal);
+    
+    if (period && period.goals === 0) {
+      return "pas de goal defini pour cette periode";
+    }
+    
+    return `Détails du goal pour ${selectedPeriod} - ${selectedEmployee}`;
+  };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>Team Goals</Typography>
-      
-      <TextField
-        fullWidth
-        size="small"
-        placeholder="Search goals..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ mb: 3 }}
-      />
-      
-      {filtered.map(goal => (
-        <GoalCard key={goal.id} goal={goal} />
-      ))}
-      
-      {filtered.length === 0 && (
-        <Typography color="text.secondary" align="center" sx={{ py: 4 }}>
-          No goals found matching your search
-        </Typography>
-      )}
-    </Box>
+    <div className="coworkers-goals-page">
+      {/* Header Section */}
+      <div className="goals-header">
+        <div className="profile-section">
+          <div className="image-placeholder">
+            <span>Image</span>
+          </div>
+          <div className="employee-info">
+            <div className="employee-name">{selectedEmployee}</div>
+            <div className="employee-selector">
+              <select 
+                value={selectedEmployee}
+                onChange={(e) => setSelectedEmployee(e.target.value)}
+                className="employee-select"
+              >
+                {employees.map(emp => (
+                  <option key={emp} value={emp}>{emp}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="export-section">
+          <button className="export-btn">Export Goals [.xlsx]</button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="goals-content">
+        <div className="goals-layout">
+          {/* Left Column - My Goals */}
+          <div className="my-goals-column">
+            <div className="column-header">My Goals</div>
+          </div>
+
+          {/* Right Side - Goal Categories */}
+          <div className="goals-categories">
+            {/* Yearly Goals */}
+            <div className="goal-category">
+              <h3>Yearly Goals</h3>
+              <div className="goal-periods">
+                {goalPeriods.yearly.map((period) => (
+                  <div key={period.id} className="goal-period-box">
+                    <div className="period-content">
+                      <span className="period-name">{period.name}</span>
+                      <button 
+                        className="expand-btn"
+                        onClick={() => handleGoalClick(period.id, period.name)}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                    <div className="period-details">
+                      <span>-</span>
+                      <span className="goals-count">{period.goals} goals</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Half-Yearly Goals */}
+            <div className="goal-category">
+              <h3>Half-Yearly Goals</h3>
+              <div className="goal-periods">
+                {goalPeriods.halfYearly.map((period) => (
+                  <div key={period.id} className="goal-period-box">
+                    <div className="period-content">
+                      <span className="period-name">{period.name}</span>
+                      <button 
+                        className="expand-btn"
+                        onClick={() => handleGoalClick(period.id, period.name)}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                    <div className="period-details">
+                      <span>-</span>
+                      <span className="goals-count">{period.goals} goals</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quarterly Goals */}
+            <div className="goal-category">
+              <h3>Quaterly Goals</h3>
+              <div className="goal-periods">
+                {goalPeriods.quarterly.map((period) => (
+                  <div key={period.id} className="goal-period-box">
+                    <div className="period-content">
+                      <span className="period-name">{period.name}</span>
+                      <button 
+                        className="expand-btn"
+                        onClick={() => handleGoalClick(period.id, period.name)}
+                      >
+                        &gt;
+                      </button>
+                    </div>
+                    <div className="period-details">
+                      <span>-</span>
+                      <span className="goals-count">{period.goals} goals</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Goal Detail Area */}
+        <div className="goal-detail-area">
+          {selectedGoal ? (
+            <div className="goal-details">
+              <h4>Détails du Goal - {selectedPeriod} - {selectedEmployee}</h4>
+              <p>{getGoalDetails()}</p>
+            </div>
+          ) : (
+            <div className="no-selection">
+              <p>Sélectionnez un goal pour voir les détails</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

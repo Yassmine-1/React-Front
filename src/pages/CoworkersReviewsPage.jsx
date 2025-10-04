@@ -1,122 +1,151 @@
 import React, { useState } from 'react';
-import { 
-  Box, Typography, Paper, TextField, Avatar, 
-  Chip, Button, Grid, LinearProgress, Divider
-} from '@mui/material';
-import { Search, Star, StarHalf, StarBorder } from '@mui/icons-material';
-
-const teamMembers = [
-  { id: 1, name: 'John Doe', role: 'Developer', rating: 4.5, status: 'On Track', avatar: 'JD' },
-  { id: 2, name: 'Jane Smith', role: 'Designer', rating: 4.8, status: 'Exceeding', avatar: 'JS' },
-  { id: 3, name: 'Alex Johnson', role: 'PM', rating: 3.9, status: 'On Track', avatar: 'AJ' },
-];
-
-const StarRating = ({ rating }) => {
-  const stars = [];
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-
-  for (let i = 1; i <= 5; i++) {
-    if (i <= fullStars) {
-      stars.push(<Star key={i} color="primary" fontSize="small" />);
-    } else if (i === fullStars + 1 && hasHalfStar) {
-      stars.push(<StarHalf key={i} color="primary" fontSize="small" />);
-    } else {
-      stars.push(<StarBorder key={i} color="primary" fontSize="small" />);
-    }
-  }
-  return <Box sx={{ display: 'flex' }}>{stars}</Box>;
-};
 
 const CoworkersReviewsPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  const filteredMembers = teamMembers.filter(member => 
-    member.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedEmployee, setSelectedEmployee] = useState('John Doe');
+
+  const employees = [
+    'John Doe',
+    'Jane Smith',
+    'Mike Johnson',
+    'Sarah Wilson',
+    'David Brown'
+  ];
+
+  const reviews = [
+    { year: '2022', status: 'Done', canLaunch: false },
+    { year: '2023', status: 'Done', canLaunch: false },
+    { year: '2024', status: 'Done', canLaunch: false },
+    { year: '2025', status: 'IDLE', canLaunch: true }
+  ];
+
+  const handleReviewClick = (year, status) => {
+    if (status === 'Done') {
+      setSelectedYear(year);
+      setSelectedReview(year);
+    }
+  };
+
+  const handleLaunchReview = (year) => {
+    setSelectedYear(year);
+    setSelectedReview(year);
+  };
+
+  const getReviewDetails = () => {
+    if (!selectedReview) return null;
+    
+    const review = reviews.find(r => r.year === selectedYear);
+    
+    if (review && review.status === 'Done') {
+      return `Détails de la review ${selectedYear} - ${selectedEmployee} - Status: ${review.status}`;
+    }
+    
+    if (review && review.status === 'IDLE') {
+      return `Lancement de la review ${selectedYear} - ${selectedEmployee} - Status: ${review.status}`;
+    }
+    
+    return "Aucune review sélectionnée";
+  };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>Team Performance</Typography>
-      
-      <Box sx={{ mb: 3, display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-        <TextField
-          placeholder="Search team..."
-          size="small"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
-            startAdornment: <Search sx={{ color: 'text.secondary', mr: 1 }} />
-          }}
-          sx={{ width: 300 }}
-        />
-      </Box>
+    <div className="coworkers-reviews-page">
+      {/* Header Section */}
+      <div className="reviews-header">
+        <div className="profile-section">
+          <div className="image-placeholder">
+            <span>Image</span>
+          </div>
+          <div className="employee-info">
+            <div className="employee-name">{selectedEmployee}</div>
+            <div className="employee-selector">
+              <select 
+                value={selectedEmployee}
+                onChange={(e) => setSelectedEmployee(e.target.value)}
+                className="employee-select"
+              >
+                {employees.map(emp => (
+                  <option key={emp} value={emp}>{emp}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="export-section">
+          <button className="export-btn">Export Goals [.xlsx]</button>
+        </div>
+      </div>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          {filteredMembers.map((member) => (
-            <Paper key={member.id} sx={{ p: 2, mb: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar sx={{ mr: 2 }}>{member.avatar}</Avatar>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="subtitle1">{member.name}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {member.role}
-                  </Typography>
-                  <Box sx={{ mt: 1 }}>
-                    <StarRating rating={member.rating} />
-                    <Typography variant="caption" sx={{ ml: 1 }}>
-                      {member.rating.toFixed(1)}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Chip 
-                  label={member.status}
-                  color={member.status === 'Exceeding' ? 'success' : 'primary'}
-                  size="small"
-                />
-              </Box>
-              <Button size="small" sx={{ mt: 1 }}>View Details</Button>
-            </Paper>
-          ))}
-        </Grid>
-        
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2, position: 'sticky', top: 20 }}>
-            <Typography variant="h6" gutterBottom>Team Stats</Typography>
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="body2">Average Rating</Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ width: '100%', mr: 1 }}>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={85} 
-                    sx={{ height: 8, borderRadius: 4 }}
-                  />
-                </Box>
-                <Typography>4.4</Typography>
-              </Box>
-            </Box>
-            <Divider sx={{ my: 2 }} />
-            <Box>
-              <Typography variant="body2" gutterBottom>Performance</Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body2">Exceeding</Typography>
-                <Typography>1</Typography>
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                <Typography variant="body2">On Track</Typography>
-                <Typography>2</Typography>
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="body2">Needs Improvement</Typography>
-                <Typography>0</Typography>
-              </Box>
-            </Box>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Box>
+      {/* Main Content */}
+      <div className="reviews-content">
+        <div className="reviews-layout">
+          {/* My Review Section */}
+          <div className="my-review-section">
+            <h2>My Review</h2>
+            
+            <div className="reviews-table-container">
+              <table className="reviews-table">
+                <thead>
+                  <tr>
+                    <th>Année</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reviews.map((review, index) => (
+                    <tr key={index}>
+                      <td className="year-cell">{review.year}</td>
+                      <td className="status-cell">
+                        <span className={`status-badge ${review.status.toLowerCase()}`}>
+                          {review.status}
+                        </span>
+                      </td>
+                      <td className="action-cell">
+                        {review.canLaunch ? (
+                          <button 
+                            className="launch-btn"
+                            onClick={() => handleLaunchReview(review.year)}
+                          >
+                            (+) lancer la review
+                          </button>
+                        ) : (
+                          <button 
+                            className="expand-btn"
+                            onClick={() => handleReviewClick(review.year, review.status)}
+                          >
+                            &gt;
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Status Legend */}
+            <div className="status-legend">
+              <span className="legend-text">(IDLE/OPEN/Waiting for Validation/Done)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Review Detail Area */}
+        <div className="review-detail-area">
+          {selectedReview ? (
+            <div className="review-details">
+              <h4>Détails de la Review - {selectedYear} - {selectedEmployee}</h4>
+              <p>{getReviewDetails()}</p>
+            </div>
+          ) : (
+            <div className="no-selection">
+              <p>Sélectionnez une review pour voir les détails</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

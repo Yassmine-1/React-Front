@@ -8,6 +8,8 @@ import CoworkersHRInfoPage from './pages/CoworkersHRInfoPage';
 import CoworkersProInfoPage from './pages/CoworkersProInfoPage';
 import PersonalSkillsPage from './pages/PersonalSkillsPage';
 import CoworkersSkillsPage from './pages/CoworkersSkillsPage';
+import TeamsSkillsPage from './pages/TeamsSkillsPage';
+import AdminSkillsPage from './pages/AdminSkillsPage';
 import PersonalGoalsPage from './pages/PersonalGoalsPage';
 import CoworkersGoalsPage from './pages/CoworkersGoalsPage';
 import PersonalReviewsPage from './pages/PersonalReviewsPage';
@@ -59,6 +61,12 @@ function Sidebar() {
         </Link>
         <Link to="/skills/coworkers" className={`menu-item ${isActive('/skills/coworkers') ? 'active' : ''}`}>
           &gt; Coworkers Skills
+        </Link>
+        <Link to="/skills/teams" className={`menu-item ${isActive('/skills/teams') ? 'active' : ''}`}>
+          &gt; Teams Skills
+        </Link>
+        <Link to="/skills/admin" className={`menu-item ${isActive('/skills/admin') ? 'active' : ''}`}>
+          &gt; Admin Skills
         </Link>
       </div>
       
@@ -115,6 +123,7 @@ function Dashboard() {
 
   // Check if we're on the dashboard route
   const isDashboardRoute = location.pathname === '/dashboard';
+  const isAdminSkillsRoute = location.pathname === '/skills/admin';
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -208,7 +217,7 @@ function Dashboard() {
         <Sidebar />
 
         {/* Center Content */}
-        <div className={`center-content ${!isDashboardRoute ? 'no-right-sidebar' : ''}`}>
+               <div className={`center-content ${!isDashboardRoute && !isAdminSkillsRoute ? 'no-right-sidebar' : ''}`}>
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<LandingPage />} />
@@ -218,6 +227,8 @@ function Dashboard() {
             <Route path="/coworkers/pro" element={<CoworkersProInfoPage />} />
             <Route path="/skills/personal" element={<PersonalSkillsPage />} />
             <Route path="/skills/coworkers" element={<CoworkersSkillsPage />} />
+            <Route path="/skills/teams" element={<TeamsSkillsPage />} />
+            <Route path="/skills/admin" element={<AdminSkillsPage />} />
             <Route path="/goals/personal" element={<PersonalGoalsPage />} />
             <Route path="/goals/coworkers" element={<CoworkersGoalsPage />} />
             <Route path="/reviews/personal" element={<PersonalReviewsPage />} />
@@ -228,7 +239,7 @@ function Dashboard() {
         </div>
 
         {/* Right Sidebar - Only show on dashboard route */}
-        {isDashboardRoute && (
+        {isDashboardRoute && !isAdminSkillsRoute && (
           <div className="right-sidebar">
             <div className="colleagues-header">
               <span>Colleagues</span>
