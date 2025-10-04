@@ -243,6 +243,49 @@
   font-size: 16px;
 }
 
+/* HR Info Table Styles */
+.hr-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.hr-info-table tr {
+  border-bottom: 1px solid #ccc;
+}
+
+.hr-info-table tr:last-child {
+  border-bottom: none;
+}
+
+.hr-info-table .table-label {
+  padding: 12px 16px;
+  background: #f8f8f8;
+  border-right: 1px solid #ccc;
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+  width: 200px;
+  vertical-align: top;
+}
+
+.hr-info-table .table-value {
+  padding: 12px 16px;
+  border-right: 1px solid #ccc;
+  background: white;
+  color: #555;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.hr-info-table .table-value:last-child {
+  border-right: none;
+}
+
 /* Layout adjustments when right sidebar is hidden */
 .main-content:not(:has(.right-sidebar)) .center-content {
   margin-right: 0;
