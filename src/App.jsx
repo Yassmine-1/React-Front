@@ -92,6 +92,7 @@ function Sidebar() {
 
 // Dashboard Component (new design)
 function Dashboard() {
+  const location = useLocation();
   const appName = "HR Dashboard";
   
   // Sample colleagues data
@@ -111,6 +112,9 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState('recent');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef(null);
+
+  // Check if we're on the dashboard route
+  const isDashboardRoute = location.pathname === '/dashboard';
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -204,7 +208,7 @@ function Dashboard() {
         <Sidebar />
 
         {/* Center Content */}
-        <div className="center-content">
+        <div className={`center-content ${!isDashboardRoute ? 'no-right-sidebar' : ''}`}>
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<LandingPage />} />
@@ -223,64 +227,66 @@ function Dashboard() {
           </Routes>
         </div>
 
-        {/* Right Sidebar */}
-        <div className="right-sidebar">
-          <div className="colleagues-header">
-            <span>Colleagues</span>
-            <Link to="/organization-chart" className="org-chart">View the organization chart</Link>
-          </div>
-          
-          <div className="search-section">
-            <input 
-              type="text" 
-              placeholder="(search for a colleague)"
-              className="search-input"
-            />
-          </div>
-          
-          <div className="new-colleagues">
-            <div className="section-title">New colleagues</div>
-            <div className="tabs">
-              <button 
-                className={`tab ${activeTab === 'recent' ? 'active' : ''}`}
-                onClick={() => setActiveTab('recent')}
-              >
-                Recent ({colleagues.recent.length})
-              </button>
-              <button 
-                className={`tab ${activeTab === 'comingSoon' ? 'active' : ''}`}
-                onClick={() => setActiveTab('comingSoon')}
-              >
-                Coming Soon ({colleagues.comingSoon.length})
-              </button>
+        {/* Right Sidebar - Only show on dashboard route */}
+        {isDashboardRoute && (
+          <div className="right-sidebar">
+            <div className="colleagues-header">
+              <span>Colleagues</span>
+              <Link to="/organization-chart" className="org-chart">View the organization chart</Link>
             </div>
-            <div className="colleagues-grid">
-              {activeTab === 'recent' ? (
-                colleagues.recent.map(colleague => (
-                  <div key={colleague.id} className="colleague-card">
-                    <div className="colleague-avatar">{colleague.avatar}</div>
-                    <div className="colleague-info">
-                      <h4 className="colleague-name">{colleague.name}</h4>
-                      <p className="colleague-position">{colleague.position}</p>
-                      <p className="colleague-date">Joined: {colleague.joinDate}</p>
+            
+            <div className="search-section">
+              <input 
+                type="text" 
+                placeholder="(search for a colleague)"
+                className="search-input"
+              />
+            </div>
+            
+            <div className="new-colleagues">
+              <div className="section-title">New colleagues</div>
+              <div className="tabs">
+                <button 
+                  className={`tab ${activeTab === 'recent' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('recent')}
+                >
+                  Recent ({colleagues.recent.length})
+                </button>
+                <button 
+                  className={`tab ${activeTab === 'comingSoon' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('comingSoon')}
+                >
+                  Coming Soon ({colleagues.comingSoon.length})
+                </button>
+              </div>
+              <div className="colleagues-grid">
+                {activeTab === 'recent' ? (
+                  colleagues.recent.map(colleague => (
+                    <div key={colleague.id} className="colleague-card">
+                      <div className="colleague-avatar">{colleague.avatar}</div>
+                      <div className="colleague-info">
+                        <h4 className="colleague-name">{colleague.name}</h4>
+                        <p className="colleague-position">{colleague.position}</p>
+                        <p className="colleague-date">Joined: {colleague.joinDate}</p>
+                      </div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                colleagues.comingSoon.map(colleague => (
-                  <div key={colleague.id} className="colleague-card">
-                    <div className="colleague-avatar">{colleague.avatar}</div>
-                    <div className="colleague-info">
-                      <h4 className="colleague-name">{colleague.name}</h4>
-                      <p className="colleague-position">{colleague.position}</p>
-                      <p className="colleague-date">Starts: {colleague.startDate}</p>
+                  ))
+                ) : (
+                  colleagues.comingSoon.map(colleague => (
+                    <div key={colleague.id} className="colleague-card">
+                      <div className="colleague-avatar">{colleague.avatar}</div>
+                      <div className="colleague-info">
+                        <h4 className="colleague-name">{colleague.name}</h4>
+                        <p className="colleague-position">{colleague.position}</p>
+                        <p className="colleague-date">Starts: {colleague.startDate}</p>
+                      </div>
                     </div>
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
 
