@@ -286,6 +286,385 @@
   border-right: none;
 }
 
+/* Skills Page Styles */
+.skills-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Search Section Styles */
+.search-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e1e5e9;
+}
+
+.search-header h2 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.search-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.employee-select {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  min-width: 250px;
+}
+
+.employee-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.skills-page .profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.skills-page .employee-info {
+  flex: 1;
+}
+
+.skills-page .job-level {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.skills-page .note {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+.hard-skills-section,
+.hard-skills-visualization-section,
+.soft-skills-section,
+.skills-synthesis-section,
+.radar-chart-section,
+.chart-visualization-section {
+  margin-bottom: 30px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 5px;
+}
+
+.toggle-btn {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.toggle-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.toggle-btn:hover {
+  background: #f8f9fa;
+}
+
+.toggle-btn.active:hover {
+  background: #0056b3;
+}
+
+.synthesis-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.synthesis-table th {
+  background: #f8f8f8;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.synthesis-table th:last-child {
+  border-right: none;
+}
+
+.synthesis-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.synthesis-table td:last-child {
+  border-right: none;
+}
+
+.synthesis-table tr:last-child td {
+  border-bottom: none;
+}
+
+.skill-category {
+  font-weight: bold;
+  background: #f8f8f8;
+}
+
+.hard-skills-table-content {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.hard-skills-table-content th {
+  background: #f8f8f8;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.hard-skills-table-content th:last-child {
+  border-right: none;
+}
+
+.hard-skills-table-content td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.hard-skills-table-content td:last-child {
+  border-right: none;
+}
+
+.hard-skills-table-content tr:last-child td {
+  border-bottom: none;
+}
+
+.skill-name {
+  font-weight: bold;
+  background: #f8f8f8;
+  width: 40%;
+}
+
+/* Soft Skills Table Styles */
+.soft-skills-table-content {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+.soft-skills-table-content th {
+  background: #f8f8f8;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.soft-skills-table-content th:last-child {
+  border-right: none;
+}
+
+.soft-skills-table-content td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.soft-skills-table-content td:last-child {
+  border-right: none;
+}
+
+.soft-skills-table-content tr:last-child td {
+  border-bottom: none;
+}
+
+.soft-skills-table-content .skill-name {
+  font-weight: bold;
+  background: #f8f8f8;
+  width: 40%;
+}
+
+.soft-skills-table-content .required-value,
+.soft-skills-table-content .required-level {
+  text-align: center;
+}
+
+.soft-skills-table-content .current-value,
+.soft-skills-table-content .current-level {
+  text-align: center;
+}
+
+.required-value,
+.required-level {
+  text-align: center;
+}
+
+.current-value,
+.current-level {
+  text-align: center;
+}
+
+.red-text {
+  color: #dc3545 !important;
+  font-weight: bold;
+}
+
+.skills-list {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skill-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.skill-item:last-child {
+  border-bottom: none;
+}
+
+.skill-category {
+  font-weight: bold;
+  flex: 1;
+}
+
+.skill-details {
+  display: flex;
+  gap: 20px;
+}
+
+.skill-details .label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.radar-chart-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.legend-color.blue {
+  background: #007bff;
+}
+
+.legend-color.orange {
+  background: #ff8c00;
+}
+
+.chart-placeholder {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+}
+
+.chart-note {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 /* Layout adjustments when right sidebar is hidden */
 .main-content:not(:has(.right-sidebar)) .center-content {
   margin-right: 0;

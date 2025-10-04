@@ -1,149 +1,510 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, 
-  TableHead, TableRow, Chip, TextField, LinearProgress, Avatar
-} from '@mui/material';
-import { Search } from '@mui/icons-material';
-
-// Mock data
-const mockTeamData = [
-  {
-    _id: "1",
-    name: "John Doe",
-    team: "Frontend",
-    experience_level: "SENIOR",
-    competencies: [
-      { competency_name: "React", score: 4.0, level_name: "EXPERT" },
-      { competency_name: "TypeScript", score: 3.5, level_name: "SENIOR" },
-    ]
-  },
-  {
-    _id: "2",
-    name: "Jane Smith",
-    team: "Backend",
-    experience_level: "CONFIRME",
-    competencies: [
-      { competency_name: "Python", score: 3.0, level_name: "CONFIRME" },
-      { competency_name: "Django", score: 3.0, level_name: "CONFIRME" },
-    ]
-  },
-];
-
-const getLevelColor = (level) => ({
-  'JUNIOR': 'info',
-  'JUNIOR+': 'info',
-  'CONFIRME': 'success',
-  'SENIOR': 'warning',
-  'EXPERT': 'error'
-})[level] || 'default';
+import React, { useState } from 'react';
 
 const CoworkersSkillsPage = () => {
+  const [viewMode, setViewMode] = useState('graph'); // 'graph' or 'list'
   const [searchTerm, setSearchTerm] = useState('');
-  const [teamFilter, setTeamFilter] = useState('all');
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedEmployee, setSelectedEmployee] = useState('John Doe');
+  
+  const employees = [
+    { name: "John Doe", team: "Frontend", level: "SENIOR" },
+    { name: "Jane Smith", team: "Backend", level: "CONFIRME" },
+    { name: "Mike Johnson", team: "DevOps", level: "EXPERT" },
+    { name: "Sarah Wilson", team: "Frontend", level: "JUNIOR" },
+    { name: "Alex Brown", team: "Backend", level: "SENIOR" }
+  ];
 
-  useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setMembers(mockTeamData);
-      setLoading(false);
-    }, 500);
-  }, []);
-
-  const filteredMembers = members.filter(member => 
-    (teamFilter === 'all' || member.team === teamFilter) &&
-    (member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     member.team.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredEmployees = employees.filter(emp => 
+    emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    emp.team.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const allSkills = [...new Set(members.flatMap(m => 
-    m.competencies.map(c => c.competency_name)
-  ))].sort();
+  const skillsData = [
+    {
+      category: "Langages de Programmation",
+      required: { value: 2, level: "JUNIOR" },
+      current: { value: 3.7, level: "CONFIRME" }
+    },
+    {
+      category: "OS & Outils",
+      required: { value: 1, level: "THEORIQUE" },
+      current: { value: 3, level: "JUNIOR" }
+    },
+    {
+      category: "Connaissances métier Génériques",
+      required: { value: 3, level: "CONFIRME" },
+      current: { value: 3, level: "JUNIOR" }
+    },
+    {
+      category: "Connaissances métier spécifiques client",
+      required: { value: 2, level: "JUNIOR" },
+      current: { value: 2.3, level: "JUNIOR" }
+    },
+    {
+      category: "Dev Ops",
+      required: { value: 3, level: "CONFIRME" },
+      current: { value: 2, level: "JUNIOR" }
+    },
+    {
+      category: "COM",
+      required: { value: 3, level: "CONFIRME" },
+      current: { value: 2.8, level: "JUNIOR" }
+    },
+    {
+      category: "MNG",
+      required: { value: 4, level: "EXPERT" },
+      current: { value: 4, level: "EXPERT" }
+    }
+  ];
 
-  if (loading) return <LinearProgress />;
+  const hardSkillsData = [
+    {
+      skill: "Connaitre les technos utilisées dans nos différents produit",
+      required: { value: 2, level: "Atteinte du niveau attendu" },
+      current: { value: 0, level: "Point d'amélioration prioritaire" }
+    },
+    {
+      skill: "Savoir définir une architecture globale",
+      required: { value: 1, level: "En-dessous du niveau attendu" },
+      current: { value: 1, level: "En-dessous du niveau attendu" }
+    },
+    {
+      skill: "Savoir prendre en compte les attentes des développeurs",
+      required: { value: 3, level: "Au-dessus du niveau attendu" },
+      current: { value: 2, level: "Atteinte du niveau attendu" }
+    },
+    {
+      skill: "Savoir s'approprier le besoin du demandeur",
+      required: { value: 2, level: "Atteinte du niveau attendu" },
+      current: { value: 3, level: "Au-dessus du niveau attendu" }
+    },
+    {
+      skill: "",
+      required: { value: 4, level: "Excellence, il est un modèle dans son rôle" },
+      current: { value: 4, level: "Excellence, il est un modèle dans son rôle" }
+    }
+  ];
+
+  const softSkillsData = [
+    {
+      skill: "Performance dans son poste",
+      required: { value: 2, level: "Atteinte du niveau attendu" },
+      current: { value: 0, level: "Point d'amélioration prioritaire" }
+    },
+    {
+      skill: "Sens du collectif et coopération",
+      required: { value: 1, level: "En-dessous du niveau attendu" },
+      current: { value: 1, level: "En-dessous du niveau attendu" }
+    },
+    {
+      skill: "Orientation client",
+      required: { value: 3, level: "Au-dessus du niveau attendu" },
+      current: { value: 2, level: "Atteinte du niveau attendu" }
+    },
+    {
+      skill: "Fiabilité",
+      required: { value: 2, level: "Atteinte du niveau attendu" },
+      current: { value: 3, level: "Au-dessus du niveau attendu" }
+    },
+    {
+      skill: "Engagement dans ses missions",
+      required: { value: 4, level: "Excellence, il est un modèle dans son rôle" },
+      current: { value: 4, level: "Excellence, il est un modèle dans son rôle" }
+    },
+    {
+      skill: "Autonomie",
+      required: { value: 3, level: "Au-dessus du niveau attendu" },
+      current: { value: 1, level: "En-dessous du niveau attendu" }
+    },
+    {
+      skill: "Investissement dans l'entreprise",
+      required: { value: 2, level: "Atteinte du niveau attendu" },
+      current: { value: 2, level: "Atteinte du niveau attendu" }
+    },
+    {
+      skill: "Autres qualités personnelles",
+      required: { value: 4, level: "Excellence, il est un modèle dans son rôle" },
+      current: { value: 3, level: "Au-dessus du niveau attendu" }
+    }
+  ];
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>Team Skills Matrix</Typography>
-      
-      <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-        <TextField
-          placeholder="Search members..."
-          variant="outlined"
-          size="small"
+    <div className="skills-page">
+      {/* Search Section */}
+      <div className="search-section">
+        <div className="search-header">
+          <h2>Coworkers Skills Assessment</h2>
+          <div className="search-controls">
+            <input
+              type="text"
+              placeholder="Search employees and coworkers..."
+              className="search-input"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          InputProps={{
-            startAdornment: <Search sx={{ mr: 1, color: 'text.secondary' }} />
-          }}
         />
         <select 
-          value={teamFilter}
-          onChange={(e) => setTeamFilter(e.target.value)}
-          style={{
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc'
-          }}
-        >
-          <option value="all">All Teams</option>
-          {[...new Set(members.map(m => m.team))].map(team => (
-            <option key={team} value={team}>{team}</option>
+              className="employee-select"
+              value={selectedEmployee}
+              onChange={(e) => setSelectedEmployee(e.target.value)}
+            >
+              {filteredEmployees.map(emp => (
+                <option key={emp.name} value={emp.name}>
+                  {emp.name} ({emp.team} - {emp.level})
+                </option>
           ))}
         </select>
-      </Box>
+          </div>
+        </div>
+      </div>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Team Member</TableCell>
-              <TableCell>Experience</TableCell>
-              {allSkills.map(skill => (
-                <TableCell key={skill}>{skill}</TableCell>
+      {/* Header Section */}
+      <div className="profile-header">
+        <div className="image-placeholder">
+          <div className="avatar-placeholder">
+            {selectedEmployee.split(' ').map(n => n[0]).join('')}
+          </div>
+        </div>
+        <div className="employee-info">
+          <div className="employee-name">{selectedEmployee}</div>
+          <div className="job-level">
+            My Job required level (JUNIOR / CONFIRMED / SENIOR)
+          </div>
+          <div className="note">
+            (l'information devrait etre récupérée des review du collègue)
+          </div>
+        </div>
+      </div>
+
+      {/* Project Skills Synthesis Section */}
+      <div className="skills-synthesis-section">
+        <div className="section-header">
+          <h3>Project Skills Synthesis</h3>
+          <div className="view-toggle">
+            <button 
+              className={`toggle-btn ${viewMode === 'graph' ? 'active' : ''}`}
+              onClick={() => setViewMode('graph')}
+            >
+              ⭐ Graph
+            </button>
+            <button 
+              className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+            >
+              📋 List
+            </button>
+          </div>
+        </div>
+
+        {viewMode === 'graph' ? (
+          <div className="skills-table">
+            <table className="synthesis-table">
+              <thead>
+                <tr>
+                  <th>Skill Categories</th>
+                  <th colSpan="2">Required Skills (exemple)</th>
+                  <th colSpan="2">My current Skills</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>Value</th>
+                  <th>Level</th>
+                  <th>Value</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                {skillsData.map((skill, index) => (
+                  <tr key={index}>
+                    <td className="skill-category">{skill.category}</td>
+                    <td className="required-value">{skill.required.value}</td>
+                    <td className="required-level">{skill.required.level}</td>
+                    <td className={`current-value ${skill.current.value < skill.required.value ? 'red-text' : ''}`}>
+                      {skill.current.value}
+                    </td>
+                    <td className={`current-level ${skill.current.level === 'JUNIOR' ? 'red-text' : ''}`}>
+                      {skill.current.level}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="skills-list">
+            <div className="list-container">
+              {skillsData.map((skill, index) => (
+                <div key={index} className="skill-item">
+                  <div className="skill-category">{skill.category}</div>
+                  <div className="skill-details">
+                    <div className="required">
+                      <span className="label">Required:</span>
+                      <span className="value">{skill.required.value} ({skill.required.level})</span>
+                    </div>
+                    <div className="current">
+                      <span className="label">Current:</span>
+                      <span className={`value ${skill.current.value < skill.required.value ? 'red-text' : ''}`}>
+                        {skill.current.value} ({skill.current.level})
+                      </span>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredMembers.map(member => (
-              <TableRow key={member._id} hover>
-                <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Avatar sx={{ width: 32, height: 32 }}>
-                      {member.name[0]}
-                    </Avatar>
-                    {member.name}
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Chip 
-                    label={member.experience_level}
-                    size="small"
-                    color={getLevelColor(member.experience_level)}
-                  />
-                </TableCell>
-                {allSkills.map(skill => {
-                  const competency = member.competencies.find(c => c.competency_name === skill);
-                  return (
-                    <TableCell key={skill}>
-                      {competency ? (
-                        <Chip
-                          label={competency.score.toFixed(1)}
-                          size="small"
-                          color={getLevelColor(competency.level_name)}
-                          variant="outlined"
-                        />
-                      ) : '-'}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Hard Skills Section */}
+      <div className="hard-skills-section">
+        <div className="section-header">
+          <h3>Hard Skills</h3>
+          <div className="view-toggle">
+            <button 
+              className={`toggle-btn ${viewMode === 'graph' ? 'active' : ''}`}
+              onClick={() => setViewMode('graph')}
+            >
+              ⭐ Graph
+            </button>
+            <button 
+              className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+            >
+              📋 List
+            </button>
+          </div>
+        </div>
+
+        {viewMode === 'list' ? (
+          <div className="hard-skills-table">
+            <table className="hard-skills-table-content">
+              <thead>
+                <tr>
+                  <th>Leader Technique</th>
+                  <th colSpan="2">Required Skills (exemple)</th>
+                  <th colSpan="2">My current Skills</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>Value</th>
+                  <th>Level</th>
+                  <th>Value</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                {hardSkillsData.map((skill, index) => (
+                  <tr key={index}>
+                    <td className="skill-name">{skill.skill}</td>
+                    <td className="required-value">{skill.required.value}</td>
+                    <td className="required-level">{skill.required.level}</td>
+                    <td className={`current-value ${skill.current.value < skill.required.value ? 'red-text' : ''}`}>
+                      {skill.current.value}
+                    </td>
+                    <td className={`current-level ${skill.current.value < skill.required.value ? 'red-text' : ''}`}>
+                      {skill.current.level}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="hard-skills-list">
+            <div className="list-container">
+              {hardSkillsData.map((skill, index) => (
+                <div key={index} className="skill-item">
+                  <div className="skill-name">{skill.skill}</div>
+                  <div className="skill-details">
+                    <div className="required">
+                      <span className="label">Required:</span>
+                      <span className="value">{skill.required.value} ({skill.required.level})</span>
+                    </div>
+                    <div className="current">
+                      <span className="label">Current:</span>
+                      <span className={`value ${skill.current.value < skill.required.value ? 'red-text' : ''}`}>
+                        {skill.current.value} ({skill.current.level})
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Hard Skills Visualization Section */}
+      <div className="hard-skills-visualization-section">
+        <div className="section-header">
+          <h3>Hard Skills Visualization</h3>
+          <div className="view-toggle">
+            <button 
+              className={`toggle-btn ${viewMode === 'graph' ? 'active' : ''}`}
+              onClick={() => setViewMode('graph')}
+            >
+              ⭐ Graph
+            </button>
+            <button 
+              className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+            >
+              📋 List
+            </button>
+          </div>
+        </div>
+        
+        <div className="radar-chart-container">
+          <div className="radar-chart">
+            <div className="chart-title">Hard Skills Radar Chart</div>
+            <div className="chart-legend">
+              <div className="legend-item">
+                <div className="legend-color blue"></div>
+                <span>Required Skills</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-color orange"></div>
+                <span>Current Skills</span>
+              </div>
+            </div>
+            <div className="chart-placeholder">
+              <div className="chart-note">
+                Hard Skills Radar Chart
+                <br />
+                Scale: 0-4 (increments of 0.5)
+                <br />
+                Skills: Technology Knowledge, Architecture Definition, Developer Expectations, 
+                Client Needs, Code Reviews, Architecture Reviews, Design Reviews, Specification Reviews
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Soft Skills Section */}
+      <div className="soft-skills-section">
+        <div className="section-header">
+          <h3>Soft Skills</h3>
+          <div className="view-toggle">
+            <button 
+              className={`toggle-btn ${viewMode === 'graph' ? 'active' : ''}`}
+              onClick={() => setViewMode('graph')}
+            >
+              ⭐ Graph
+            </button>
+            <button 
+              className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+            >
+              📋 List
+            </button>
+          </div>
+        </div>
+
+        {viewMode === 'list' ? (
+          <div className="soft-skills-table">
+            <table className="soft-skills-table-content">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th colSpan="2">Required Skills (exemple)</th>
+                  <th colSpan="2">My current Skills</th>
+                </tr>
+                <tr>
+                  <th>Soft Skills</th>
+                  <th>Value</th>
+                  <th>Level</th>
+                  <th>Value</th>
+                  <th>Level</th>
+                </tr>
+              </thead>
+              <tbody>
+                {softSkillsData.map((skill, index) => (
+                  <tr key={index}>
+                    <td className="skill-name">{skill.skill}</td>
+                    <td className="required-value">{skill.required.value}</td>
+                    <td className="required-level">{skill.required.level}</td>
+                    <td className={`current-value ${skill.current.value < skill.required.value ? 'red-text' : ''}`}>
+                      {skill.current.value}
+                    </td>
+                    <td className={`current-level red-text`}>
+                      {skill.current.level}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="soft-skills-list">
+            <div className="list-container">
+              {softSkillsData.map((skill, index) => (
+                <div key={index} className="skill-item">
+                  <div className="skill-name">{skill.skill}</div>
+                  <div className="skill-details">
+                    <div className="required">
+                      <span className="label">Required:</span>
+                      <span className="value">{skill.required.value} ({skill.required.level})</span>
+                    </div>
+                    <div className="current">
+                      <span className="label">Current:</span>
+                      <span className={`value red-text`}>
+                        {skill.current.value} ({skill.current.level})
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Chart Visualization Section */}
+      <div className="chart-visualization-section">
+        <div className="section-header">
+          <h3>Skills Visualization</h3>
+          <div className="view-toggle">
+            <button 
+              className={`toggle-btn ${viewMode === 'graph' ? 'active' : ''}`}
+              onClick={() => setViewMode('graph')}
+            >
+              ⭐ Graph
+            </button>
+            <button 
+              className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => setViewMode('list')}
+            >
+              📋 List
+            </button>
+          </div>
+        </div>
+        
+        <div className="radar-chart-container">
+          <div className="radar-chart">
+            <div className="chart-title">Skills Radar Chart</div>
+            <div className="chart-legend">
+              <div className="legend-item">
+                <div className="legend-color blue"></div>
+                <span>Ing Dev HGW-Confirmé</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-color orange"></div>
+                <span>INGS</span>
+              </div>
+            </div>
+            <div className="chart-placeholder">
+              <div className="chart-note">
+                Radar chart visualization would be implemented here
+                <br />
+                Scale: 0-4 (increments of 0.5)
+                <br />
+                Skills: Dev Embarqué, Linux Embarqué & Tools, NET/TVN. Gen, 
+                Techno SAH, Wifi, Dev Ops, COM, MNG
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
